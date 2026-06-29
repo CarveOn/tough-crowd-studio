@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en-IE">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="googlebot" content="noindex, nofollow">
+<title>Tough Crowd Studio — Build Plan & Execution Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#000000;
+  --surface:#0a0a0c;
+  --surface-2:#101015;
+  --surface-3:#16161d;
+  --line:rgba(255,255,255,0.11);
+  --line-soft:rgba(255,255,255,0.06);
+  --text:#f3f3f1;
+  --muted:#9b9b98;
+  --faint:#65656a;
+
+  --red:#ff3b30;        /* Tough Crowd signature */
+  --setup:#c8f24e;      /* Phase 0 — lime */
+  --web:#36e0d4;        /* Phase 1 — cyan */
+  --pay:#ffc23d;        /* Phase 2 — amber */
+  --app:#b18cff;        /* Phase 3 — violet */
+  --pipe:#ff7a59;       /* Phase 4 — coral */
+  --brand:#ff5a9e;      /* Phase 5 — magenta */
+  --wire:#5ec8ff;       /* connectors — sky */
+
+  --d-green:#46d160;
+  --d-amber:#ffc23d;
+  --d-orange:#ff8a3d;
+  --d-red:#ff3b30;
+
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --disp:'Space Grotesk',system-ui,sans-serif;
+  --body:'Inter',system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:30px;overflow-x:hidden}
+body{
+  background:var(--bg);color:var(--text);font-family:var(--body);
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--red);color:#fff}
+
+/* layout */
+.shell{display:flex;max-width:1400px;margin:0 auto}
+.rail{
+  width:248px;flex:none;position:sticky;top:0;height:100vh;
+  border-right:1px solid var(--line);padding:30px 22px;overflow-y:auto;
+}
+.rail::-webkit-scrollbar{width:6px}
+.rail::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
+.content{flex:1;min-width:0;padding:0 0 120px}
+.wrap{max-width:980px;margin:0 auto;padding:0 40px}
+
+/* rail nav */
+.rail .logo{font-family:var(--disp);font-weight:700;font-size:18px;letter-spacing:-0.02em;line-height:1.15;margin-bottom:4px}
+.rail .logo b{color:var(--red)}
+.rail .sub{font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:0.14em;margin-bottom:26px}
+.navlist{list-style:none;display:flex;flex-direction:column;gap:2px}
+.navlist a{
+  display:flex;align-items:center;gap:11px;padding:7px 9px;border-radius:7px;
+  font-size:13px;color:var(--muted);transition:.15s;line-height:1.25;
+}
+.navlist a:hover{background:var(--surface-2);color:var(--text)}
+.navlist a.active{background:var(--surface-2);color:var(--text)}
+.navlist a .dot{width:7px;height:7px;border-radius:50%;flex:none;background:var(--faint)}
+.navlist a .n{font-family:var(--mono);font-size:11px;color:var(--faint);width:14px;flex:none}
+.navlist a.active .n{color:var(--text)}
+.rail .foot{margin-top:28px;padding-top:18px;border-top:1px solid var(--line-soft);font-size:11px;color:var(--faint);line-height:1.5}
+
+/* mobile top nav */
+.topbar{display:none}
+
+/* hero */
+.hero{padding:90px 0 60px;border-bottom:1px solid var(--line)}
+.kicker{
+  display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11px;
+  text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);
+  border:1px solid var(--line);border-radius:100px;padding:6px 14px;margin-bottom:30px;
+}
+.kicker .pulse{width:7px;height:7px;border-radius:50%;background:var(--red)}
+h1.title{font-family:var(--disp);font-weight:700;font-size:clamp(40px,7vw,76px);line-height:0.98;letter-spacing:-0.035em;margin-bottom:8px}
+h1.title .stroke{color:transparent;-webkit-text-stroke:1.4px var(--text)}
+h1.title em{font-style:normal;color:var(--red)}
+.hero .lede{font-size:clamp(17px,2.3vw,21px);color:var(--muted);max-width:680px;margin-top:26px;line-height:1.5}
+.hero .lede b{color:var(--text);font-weight:600}
+.herometa{display:flex;flex-wrap:wrap;gap:30px;margin-top:42px}
+.herometa div{display:flex;flex-direction:column;gap:3px}
+.herometa .k{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:0.12em;color:var(--faint)}
+.herometa .v{font-size:15px;color:var(--text);font-weight:500}
+
+/* sections */
+section{padding:74px 0;border-bottom:1px solid var(--line)}
+.sechead{display:flex;align-items:baseline;gap:16px;margin-bottom:14px}
+.secnum{font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:0.04em}
+.sectag{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:0.16em;color:var(--faint)}
+h2{font-family:var(--disp);font-weight:700;font-size:clamp(28px,4.4vw,42px);line-height:1.04;letter-spacing:-0.025em;margin-bottom:18px}
+.intro{font-size:18px;color:var(--muted);max-width:760px;line-height:1.55}
+.intro b{color:var(--text);font-weight:600}
+h3{font-family:var(--disp);font-weight:600;font-size:22px;letter-spacing:-0.015em;margin:40px 0 14px}
+h4{font-family:var(--disp);font-weight:600;font-size:16px;margin:0 0 6px}
+p{margin-bottom:14px;color:#d9d9d6}
+p.muted{color:var(--muted)}
+.lead-accent{font-weight:600}
+
+/* accent helpers per section */
+.s-setup .secnum,.s-setup h2 .hl{color:var(--setup)}
+.s-web .secnum,.s-web h2 .hl{color:var(--web)}
+.s-pay .secnum,.s-pay h2 .hl{color:var(--pay)}
+.s-app .secnum,.s-app h2 .hl{color:var(--app)}
+.s-pipe .secnum,.s-pipe h2 .hl{color:var(--pipe)}
+.s-brand .secnum,.s-brand h2 .hl{color:var(--brand)}
+.s-wire .secnum,.s-wire h2 .hl{color:var(--wire)}
+.s-red .secnum,.s-red h2 .hl{color:var(--red)}
+
+/* cards & grids */
+.grid{display:grid;gap:16px;margin-top:8px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px}
+.card.flush{padding:0;overflow:hidden}
+.card .ic{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--faint)}
+
+/* step list */
+.steps{counter-reset:step;margin-top:20px;display:flex;flex-direction:column;gap:14px}
+.step{display:flex;gap:18px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 22px;position:relative}
+.step .num{
+  counter-increment:step;flex:none;width:34px;height:34px;border-radius:9px;
+  display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:14px;
+  border:1px solid var(--line);color:var(--text);background:var(--surface-2);
+}
+.step .num::before{content:counter(step,decimal-leading-zero)}
+.step .body{flex:1;min-width:0}
+.step .body p{margin-bottom:0;font-size:15px;color:#cfcfcc}
+.accent-num .num{border-color:currentColor}
+
+/* command block */
+.cmd{
+  font-family:var(--mono);font-size:13px;line-height:1.7;background:#060608;
+  border:1px solid var(--line);border-radius:10px;margin-top:13px;position:relative;
+  overflow:hidden;
+}
+.cmd .cmdhead{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-bottom:1px solid var(--line-soft);background:var(--surface-2)}
+.cmd .cmdhead .lbl{font-size:10px;text-transform:uppercase;letter-spacing:0.14em;color:var(--faint)}
+.cmd .copy{font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);cursor:pointer;border:1px solid var(--line);border-radius:5px;padding:3px 8px;background:none;font-family:var(--mono)}
+.cmd .copy:hover{color:var(--text);border-color:var(--muted)}
+.cmd pre{padding:14px 14px;overflow-x:auto;color:#cdd6c2;white-space:pre-wrap;word-break:break-word}
+.cmd pre .pp{color:var(--setup)}
+.cmd pre .cc{color:var(--faint)}
+.cmd .copy.done{color:var(--setup);border-color:var(--setup)}
+
+/* terminal mockup */
+.window{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:8px}
+.winbar{display:flex;align-items:center;gap:8px;padding:11px 14px;background:var(--surface-2);border-bottom:1px solid var(--line)}
+.winbar .dots{display:flex;gap:6px}
+.winbar .dots i{width:11px;height:11px;border-radius:50%;display:block}
+.winbar .dots i:nth-child(1){background:#ff5f57}
+.winbar .dots i:nth-child(2){background:#febc2e}
+.winbar .dots i:nth-child(3){background:#28c840}
+.winbar .url{flex:1;text-align:center;font-family:var(--mono);font-size:11px;color:var(--faint)}
+.winbar .url span{background:#000;border:1px solid var(--line);border-radius:6px;padding:3px 14px}
+.term{font-family:var(--mono);font-size:12.5px;line-height:1.85;padding:18px;background:#060608;color:#c9c9c4}
+.term .p{color:var(--setup)}
+.term .u{color:var(--web)}
+.term .out{color:var(--muted)}
+.term .ai{color:var(--app)}
+.term .ok{color:var(--d-green)}
+.term .dim{color:var(--faint)}
+
+/* callouts */
+.callout{border:1px solid var(--line);border-left-width:3px;border-radius:10px;padding:16px 20px;margin-top:18px;background:var(--surface)}
+.callout .ct{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:0.14em;margin-bottom:6px}
+.callout p{margin-bottom:0;font-size:14.5px;color:#cfcfcc}
+.callout.tip{border-left-color:var(--web)} .callout.tip .ct{color:var(--web)}
+.callout.warn{border-left-color:var(--red)} .callout.warn .ct{color:var(--red)}
+.callout.cost{border-left-color:var(--pay)} .callout.cost .ct{color:var(--pay)}
+.callout.note{border-left-color:var(--faint)} .callout.note .ct{color:var(--muted)}
+
+/* pills */
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:0.08em;padding:4px 9px;border-radius:100px;border:1px solid var(--line);color:var(--muted)}
+.pill.official{color:var(--d-green);border-color:rgba(70,209,96,.4)}
+.pill.community{color:var(--pay);border-color:rgba(255,194,61,.4)}
+.pill.free{color:var(--web);border-color:rgba(54,224,212,.4)}
+
+/* architecture diagram */
+.arch{margin-top:30px}
+.arch .top{display:flex;justify-content:center;margin-bottom:8px}
+.archnode{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:16px 22px;text-align:center;min-width:220px}
+.archnode .role{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.14em;color:var(--faint);margin-bottom:5px}
+.archnode .nm{font-family:var(--disp);font-weight:600;font-size:17px}
+.archnode.hub{border-color:var(--red)}
+.archnode.hub .nm{color:var(--red)}
+.arch .stem{width:1px;height:26px;background:var(--line);margin:0 auto}
+.arch .branch{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:8px}
+.arch .leg{height:1px;background:var(--line);margin:0 auto 8px;width:calc(100% - 0px)}
+.arch .legwrap{position:relative}
+.arch .legwrap::before{content:"";position:absolute;top:-26px;left:50%;width:1px;height:26px;background:var(--line)}
+.pcard{background:var(--surface);border:1px solid var(--line);border-top-width:3px;border-radius:12px;padding:16px}
+.pcard .tag{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--faint);margin-bottom:8px}
+.pcard h4{margin-bottom:4px;font-size:15px}
+.pcard p{font-size:13px;color:var(--muted);margin-bottom:0;line-height:1.45}
+.pcard.c-web{border-top-color:var(--web)}
+.pcard.c-app{border-top-color:var(--app)}
+.pcard.c-pay{border-top-color:var(--pay)}
+.pcard.c-wire{border-top-color:var(--wire)}
+
+/* roadmap */
+.road{margin-top:26px;display:flex;flex-direction:column;gap:0}
+.phase{display:grid;grid-template-columns:120px 1fr;gap:24px;padding:22px 0;border-top:1px solid var(--line)}
+.phase:last-child{border-bottom:1px solid var(--line)}
+.phase .pl{display:flex;flex-direction:column;gap:6px}
+.phase .pnum{font-family:var(--disp);font-weight:700;font-size:26px;letter-spacing:-0.02em}
+.phase .pdur{font-family:var(--mono);font-size:11px;color:var(--faint)}
+.phase .pbar{width:36px;height:4px;border-radius:2px;margin-top:4px}
+.phase h4{font-size:18px;margin-bottom:10px}
+.phase ul{list-style:none;display:flex;flex-direction:column;gap:7px}
+.phase li{font-size:14px;color:#cfcfcc;padding-left:20px;position:relative}
+.phase li::before{content:"";position:absolute;left:0;top:9px;width:7px;height:7px;border-radius:2px;background:currentColor}
+.p0 .pnum,.p0 li::before{color:var(--setup)} .p0 .pbar{background:var(--setup)}
+.p1 .pnum,.p1 li::before{color:var(--web)} .p1 .pbar{background:var(--web)}
+.p2 .pnum,.p2 li::before{color:var(--pay)} .p2 .pbar{background:var(--pay)}
+.p3 .pnum,.p3 li::before{color:var(--app)} .p3 .pbar{background:var(--app)}
+.p4 .pnum,.p4 li::before{color:var(--pipe)} .p4 .pbar{background:var(--pipe)}
+.p5 .pnum,.p5 li::before{color:var(--brand)} .p5 .pbar{background:var(--brand)}
+.phase li b{color:#fff;font-weight:600}
+
+/* website mockup */
+.site-mock .hero-mk{padding:46px 30px;text-align:center;background:#060608}
+.site-mock .nav-mk{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;border-bottom:1px solid var(--line);font-size:12px}
+.site-mock .nav-mk .lg{font-family:var(--disp);font-weight:700}
+.site-mock .nav-mk .lg b{color:var(--red)}
+.site-mock .nav-mk .lks{display:flex;gap:16px;color:var(--faint);font-family:var(--mono);font-size:11px}
+.site-mock .cta-mk{display:inline-block;background:var(--red);color:#fff;font-weight:600;font-size:12px;padding:8px 18px;border-radius:8px}
+.site-mock h3.mkh{font-family:var(--disp);font-weight:700;font-size:34px;letter-spacing:-0.03em;margin:0 0 10px;line-height:1}
+.site-mock h3.mkh em{font-style:normal;color:var(--red)}
+.site-mock .mksub{color:var(--muted);font-size:13px;max-width:420px;margin:0 auto 18px}
+
+.heads{display:flex;flex-direction:column;gap:12px;margin-top:8px}
+.headopt{border:1px solid var(--line);border-radius:12px;padding:18px 20px;background:var(--surface)}
+.headopt .ho{font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--faint);margin-bottom:8px;display:flex;gap:8px;align-items:center}
+.headopt .ho .rec{color:var(--web)}
+.headopt .hh{font-family:var(--disp);font-weight:700;font-size:21px;letter-spacing:-0.02em;margin-bottom:5px}
+.headopt p{font-size:13.5px;color:var(--muted);margin:0}
+
+/* services tier */
+.tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:8px}
+.tier{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
+.tier.flag{border-color:var(--red)}
+.tier .tn{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
+.tier .tp{font-family:var(--disp);font-weight:700;font-size:22px;letter-spacing:-0.02em;margin-bottom:8px}
+.tier .tp small{font-size:12px;color:var(--muted);font-weight:400}
+.tier p{font-size:12.5px;color:var(--muted);margin:0;line-height:1.45}
+.tier .hid{margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);font-family:var(--mono);font-size:11px;color:var(--app)}
+.tier .hid b{color:#fff}
+
+/* enquiry form mock */
+.form-mk{display:flex;flex-direction:column;gap:10px;padding:22px}
+.fld{border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--faint);background:#060608;display:flex;justify-content:space-between;align-items:center}
+.fld .req{color:var(--web);font-family:var(--mono);font-size:10px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-size:11px;border:1px solid var(--line);border-radius:100px;padding:4px 11px;color:var(--muted)}
+.chip.on{border-color:var(--web);color:var(--web)}
+
+/* deadline scale */
+.scale{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:24px}
+.seg{border-radius:10px;padding:16px;text-align:center;border:1px solid}
+.seg .lab{font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px}
+.seg .rng{font-size:13px;color:#fff;font-weight:600}
+.seg.green{background:rgba(70,209,96,.08);border-color:rgba(70,209,96,.4)} .seg.green .lab{color:var(--d-green)}
+.seg.amber{background:rgba(255,194,61,.08);border-color:rgba(255,194,61,.4)} .seg.amber .lab{color:var(--d-amber)}
+.seg.orange{background:rgba(255,138,61,.09);border-color:rgba(255,138,61,.45)} .seg.orange .lab{color:var(--d-orange)}
+.seg.red{background:rgba(255,59,48,.1);border-color:rgba(255,59,48,.5)} .seg.red .lab{color:var(--d-red)}
+
+/* dashboard mockup */
+.dash{display:grid;grid-template-columns:150px 1fr;min-height:380px}
+.dash .side{border-right:1px solid var(--line);padding:16px 12px;background:var(--surface-2)}
+.dash .side .si{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--muted);padding:8px 9px;border-radius:7px;margin-bottom:2px}
+.dash .side .si.on{background:rgba(177,140,255,.12);color:var(--app)}
+.dash .side .si .sq{width:7px;height:7px;border-radius:2px;background:currentColor;flex:none}
+.dash .main{padding:18px;background:#060608}
+.statstrip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.stat{border:1px solid var(--line);border-radius:10px;padding:12px}
+.stat .sv{font-family:var(--disp);font-weight:700;font-size:22px;letter-spacing:-0.02em}
+.stat .sk{font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--faint);font-family:var(--mono);margin-top:2px}
+.urgent{border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:16px}
+.urgent .uh{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:var(--red);margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.urow{display:flex;align-items:center;justify-content:space-between;border-left:3px solid;padding:7px 11px;border-radius:0 7px 7px 0;background:var(--surface-2);margin-bottom:6px;font-size:12px}
+.urow:last-child{margin-bottom:0}
+.urow .due{font-family:var(--mono);font-size:10.5px;font-weight:600}
+.urow.red{border-color:var(--d-red)} .urow.red .due{color:var(--d-red)}
+.urow.orange{border-color:var(--d-orange)} .urow.orange .due{color:var(--d-orange)}
+.urow.amber{border-color:var(--d-amber)} .urow.amber .due{color:var(--d-amber)}
+.cols2{display:grid;grid-template-columns:1.3fr 1fr;gap:12px}
+.projlist .pj{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:8px;padding:9px 11px;margin-bottom:7px;font-size:12px;background:var(--surface)}
+.pjdot{width:9px;height:9px;border-radius:50%;flex:none}
+.profit{border:1px solid var(--app);border-radius:10px;padding:14px;background:rgba(177,140,255,.05)}
+.profit .ph{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--app);margin-bottom:10px}
+.profit .prow{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--line-soft)}
+.profit .prow:last-child{border-bottom:0}
+.profit .big{font-family:var(--disp);font-weight:700;font-size:24px;color:var(--d-green);letter-spacing:-0.02em}
+.profit .prow .lbl{color:var(--muted)}
+
+/* kanban */
+.kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:8px}
+.kcol{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px}
+.kcol .kh{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--faint);margin-bottom:10px;display:flex;justify-content:space-between}
+.kcard{background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:9px 10px;margin-bottom:7px;font-size:12px}
+.kcard .kn{font-weight:600}
+.kcard .kv{font-family:var(--mono);font-size:10px;color:var(--faint);margin-top:2px}
+.kcol.won{border-color:rgba(70,209,96,.35)} .kcol.won .kh{color:var(--d-green)}
+.kcol.lost{border-color:rgba(255,59,48,.25)} .kcol.lost .kh{color:var(--d-red)}
+.winrate{display:inline-flex;align-items:baseline;gap:8px;margin-top:14px;border:1px solid var(--line);border-radius:10px;padding:10px 16px}
+.winrate b{font-family:var(--disp);font-weight:700;font-size:26px;color:var(--pipe)}
+.winrate span{font-size:12px;color:var(--muted);font-family:var(--mono)}
+
+/* sheet mockup */
+.sheet{font-family:var(--mono);font-size:12px;overflow:hidden}
+.sheet .srow{display:grid;grid-template-columns:1.6fr .8fr .8fr 1fr 1fr;border-bottom:1px solid var(--line-soft)}
+.sheet .srow > div{padding:9px 12px;border-right:1px solid var(--line-soft)}
+.sheet .srow.hd{background:var(--surface-2);color:var(--faint);font-size:10px;text-transform:uppercase;letter-spacing:0.06em}
+.sheet .srow .tot{color:var(--pay);font-weight:700}
+.sheet .srow .hid{color:var(--app)}
+.tabbar{display:flex;gap:0;background:var(--surface-2);border-top:1px solid var(--line)}
+.tabbar .tb{font-family:var(--mono);font-size:10px;padding:7px 14px;color:var(--faint);border-right:1px solid var(--line-soft)}
+.tabbar .tb.on{color:var(--text);background:#060608;border-top:2px solid var(--pay)}
+
+/* proposal doc */
+.doc{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.doc .chapters{border-right:1px solid var(--line);padding:8px 0}
+.doc .ch{display:flex;align-items:center;gap:12px;padding:9px 18px;font-size:12.5px;color:var(--muted)}
+.doc .ch .ci{font-family:var(--mono);font-size:10px;color:var(--faint);width:18px}
+.doc .ch.spot{color:var(--text)}
+.doc .ch.spot .ci{color:var(--pay)}
+.doc .page{padding:22px;background:#060608}
+.doc .page .invest{border:1px solid var(--pay);border-radius:10px;padding:16px;text-align:center;margin-bottom:14px}
+.doc .page .invest .il{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--pay)}
+.doc .page .invest .iv{font-family:var(--disp);font-weight:700;font-size:32px;letter-spacing:-0.02em;margin-top:4px}
+.doc .page .invest .ix{font-size:11px;color:var(--faint);margin-top:2px}
+.depbtn{display:block;text-align:center;background:#635bff;color:#fff;font-weight:600;font-size:12px;padding:10px;border-radius:8px}
+.doc .page .terms{font-size:11px;color:var(--faint);text-align:center;margin-top:10px;font-family:var(--mono)}
+
+/* brandpad guidelines mockup */
+.guide{padding:20px}
+.swatches{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:18px}
+.sw{border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.sw .chip{height:54px;border-radius:0}
+.sw .meta{padding:7px 8px;font-family:var(--mono);font-size:9.5px}
+.sw .meta .hex{color:var(--text);display:flex;justify-content:space-between;align-items:center}
+.sw .meta .cp{color:var(--faint);cursor:default}
+.sw .meta .nm{color:var(--faint);margin-top:1px}
+.typ{border:1px solid var(--line);border-radius:9px;padding:16px;margin-bottom:14px}
+.typ .tbig{font-family:var(--disp);font-weight:700;font-size:40px;letter-spacing:-0.02em;line-height:1}
+.typ .tmeta{display:flex;justify-content:space-between;margin-top:8px;font-family:var(--mono);font-size:11px;color:var(--faint)}
+.logos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.logobox{border:1px solid var(--line);border-radius:9px;height:74px;display:grid;place-items:center;font-family:var(--disp);font-weight:700;font-size:16px;position:relative}
+.logobox .vl{position:absolute;bottom:6px;left:8px;font-family:var(--mono);font-size:9px;color:var(--faint)}
+.logobox.light{background:#f3f3f1;color:#000}
+.logobox.dark{background:#060608;color:#fff}
+.logobox.mono{background:var(--surface-2);color:var(--muted)}
+.dodont{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dd{border:1px solid var(--line);border-radius:9px;padding:12px;font-size:12px}
+.dd .h{font-family:var(--mono);font-size:11px;letter-spacing:0.06em;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.dd.do{border-color:rgba(70,209,96,.35)} .dd.do .h{color:var(--d-green)}
+.dd.dont{border-color:rgba(255,59,48,.3)} .dd.dont .h{color:var(--d-red)}
+
+/* folder tree */
+.tree{font-family:var(--mono);font-size:13px;line-height:1.95;padding:20px;color:#cfcfcc}
+.tree .f{color:var(--setup)}
+.tree .d{color:var(--faint)}
+.tree .c{color:var(--app)}
+
+/* connector grid */
+.conns{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:8px}
+.conn{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.conn .ch{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.conn .ch h4{margin:0;font-size:15px}
+.conn p{font-size:13px;color:var(--muted);margin:0;line-height:1.45}
+
+/* agents */
+.agents{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+.agent{display:grid;grid-template-columns:42px 1fr;gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;align-items:start}
+.agent .ab{width:42px;height:42px;border-radius:10px;border:1px solid var(--wire);color:var(--wire);display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:16px;background:rgba(94,200,255,.06)}
+.agent h4{font-size:15px;margin-bottom:3px}
+.agent p{font-size:13px;color:var(--muted);margin:0}
+.agent .seq{font-family:var(--mono);font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:0.08em;margin-top:6px}
+
+/* cost table */
+.costtbl{width:100%;border-collapse:collapse;margin-top:8px;font-size:14px}
+.costtbl th,.costtbl td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line-soft)}
+.costtbl th{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--faint);font-weight:400}
+.costtbl td.amt{font-family:var(--mono);font-weight:700;text-align:right;white-space:nowrap}
+.costtbl td .nt{color:var(--faint);font-size:12px;display:block;margin-top:3px}
+.costtbl tr.total td{border-top:1px solid var(--line);border-bottom:0;font-weight:600;padding-top:16px}
+.costtbl tr.total .amt{color:var(--pay);font-size:16px}
+.freebadge{color:var(--d-green)}
+
+/* additions / missing */
+.adds{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+.add{display:grid;grid-template-columns:74px 1fr;gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.prio{font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:0.08em;padding:4px 0;text-align:center;border-radius:6px;height:fit-content;border:1px solid}
+.prio.must{color:var(--red);border-color:rgba(255,59,48,.4)}
+.prio.should{color:var(--pay);border-color:rgba(255,194,61,.4)}
+.prio.later{color:var(--muted);border-color:var(--line)}
+.add h4{font-size:15px;margin-bottom:3px}
+.add p{font-size:13px;color:var(--muted);margin:0}
+
+/* risks */
+.risk{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-top:10px}
+.risk .rk{font-size:14px;font-weight:600;color:#fff;margin-bottom:5px;display:flex;gap:9px}
+.risk .rk::before{content:"!";font-family:var(--mono);color:var(--red);font-weight:700;flex:none}
+.risk .mi{font-size:13px;color:var(--muted);padding-left:18px}
+.risk .mi b{color:var(--web);font-weight:600}
+
+/* final */
+.bigquote{font-family:var(--disp);font-weight:600;font-size:clamp(22px,3.4vw,32px);line-height:1.25;letter-spacing:-0.02em;max-width:780px}
+.bigquote .hl{color:var(--red)}
+.nextmove{margin-top:34px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.nm{border:1px solid var(--line);border-radius:12px;padding:18px}
+.nm .nmn{font-family:var(--mono);font-size:11px;color:var(--red);margin-bottom:8px}
+.nm h4{font-size:15px;margin-bottom:5px}
+.nm p{font-size:13px;color:var(--muted);margin:0}
+
+/* misc */
+.section-foot{margin-top:22px}
+.divider{height:1px;background:var(--line-soft);margin:28px 0}
+.tldr{background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-top:26px}
+.tldr .tt{font-family:var(--mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--faint);margin-bottom:12px}
+.tldr ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+.tldr li{font-size:14.5px;padding-left:24px;position:relative;color:#d9d9d6}
+.tldr li::before{content:"→";position:absolute;left:0;color:var(--red);font-family:var(--mono)}
+.tldr li b{color:#fff;font-weight:600}
+
+@media(max-width:960px){
+  .rail{display:none}
+  .topbar{display:flex;position:sticky;top:0;z-index:50;background:rgba(0,0,0,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 18px;align-items:center;gap:14px;overflow-x:auto}
+  .topbar .lg{font-family:var(--disp);font-weight:700;font-size:15px;flex:none}
+  .topbar .lg b{color:var(--red)}
+  .topbar a{font-size:12px;color:var(--muted);white-space:nowrap;font-family:var(--mono)}
+  .wrap{padding:0 22px}
+  .g2,.g3,.g4,.tiers,.cols2,.arch .branch,.nextmove{grid-template-columns:1fr}
+  .scale{grid-template-columns:1fr 1fr}
+  .kanban{grid-template-columns:1fr 1fr}
+  .conns{grid-template-columns:1fr}
+  .swatches{grid-template-columns:repeat(3,1fr)}
+  .logos{grid-template-columns:1fr}
+  .doc{grid-template-columns:1fr}
+  .dash{grid-template-columns:1fr}
+  .dash .side{display:none}
+  .phase{grid-template-columns:1fr}
+  .arch .legwrap::before{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="lg">Tough <b>Crowd</b></span>
+  <a href="#picture">Picture</a>
+  <a href="#roadmap">Roadmap</a>
+  <a href="#setup">Setup</a>
+  <a href="#website">Website</a>
+  <a href="#proposals">Proposals</a>
+  <a href="#app">Studio App</a>
+  <a href="#pipeline">Pipeline</a>
+  <a href="#brandpad">Guidelines</a>
+  <a href="#connectors">Connectors</a>
+  <a href="#numbers">Numbers</a>
+  <a href="#start">Start</a>
+</div>
+
+<div class="shell">
+  <!-- LEFT RAIL -->
+  <aside class="rail">
+    <div class="logo">Tough <b>Crowd</b><br>Studio</div>
+    <div class="sub">Build &amp; Execution Plan</div>
+    <nav>
+      <ul class="navlist">
+        <li><a href="#top"><span class="n">00</span><span class="dot" style="background:var(--red)"></span>The brief</a></li>
+        <li><a href="#picture"><span class="n">01</span><span class="dot" style="background:#fff"></span>The big picture</a></li>
+        <li><a href="#roadmap"><span class="n">02</span><span class="dot" style="background:#fff"></span>The roadmap</a></li>
+        <li><a href="#setup"><span class="n">03</span><span class="dot" style="background:var(--setup)"></span>Phase 0 · Setup</a></li>
+        <li><a href="#website"><span class="n">04</span><span class="dot" style="background:var(--web)"></span>Phase 1 · Website</a></li>
+        <li><a href="#proposals"><span class="n">05</span><span class="dot" style="background:var(--pay)"></span>Phase 2 · Proposals</a></li>
+        <li><a href="#app"><span class="n">06</span><span class="dot" style="background:var(--app)"></span>Phase 3 · Studio App</a></li>
+        <li><a href="#pipeline"><span class="n">07</span><span class="dot" style="background:var(--pipe)"></span>Phase 4 · Pipeline</a></li>
+        <li><a href="#brandpad"><span class="n">08</span><span class="dot" style="background:var(--brand)"></span>Phase 5 · Guidelines</a></li>
+        <li><a href="#connectors"><span class="n">09</span><span class="dot" style="background:var(--wire)"></span>Connectors &amp; agents</a></li>
+        <li><a href="#numbers"><span class="n">10</span><span class="dot" style="background:var(--pay)"></span>The numbers</a></li>
+        <li><a href="#additions"><span class="n">11</span><span class="dot" style="background:var(--red)"></span>What to add</a></li>
+        <li><a href="#start"><span class="n">12</span><span class="dot" style="background:var(--red)"></span>Where to start</a></li>
+      </ul>
+    </nav>
+    <div class="foot">Built for Justin Murtagh.<br>Verified June 2026. Prices and free-tier limits move, so check each provider before you commit.</div>
+  </aside>
+
+  <!-- CONTENT -->
+  <main class="content">
+  <div class="wrap">
+
+    <!-- HERO -->
+    <header class="hero" id="top">
+      <span class="kicker"><span class="pulse"></span>Studio operating system · from a blank Mac</span>
+      <h1 class="title">Stand out<br>from the <em>noise.</em></h1>
+      <p class="lede">A complete plan for launching <b>Tough Crowd Studio</b> and building your own bespoke studio software with Claude Code. The market is flooded with work that looks finished but isn't. <b>Your product is 25 years of judgement.</b> This is how you build the business and the tools around it, starting from nothing installed.</p>
+      <div class="herometa">
+        <div><span class="k">For</span><span class="v">Justin Murtagh</span></div>
+        <div><span class="k">Discipline</span><span class="v">Branding &amp; rebranding</span></div>
+        <div><span class="k">Build partner</span><span class="v">Claude Code</span></div>
+        <div><span class="k">Stack</span><span class="v">Cloudflare · Vercel · Supabase · Resend</span></div>
+        <div><span class="k">Running cost</span><span class="v">£0 to start, ~£50–55/mo flat live</span></div>
+      </div>
+    </header>
+
+    <!-- 01 BIG PICTURE -->
+    <section id="picture" class="s-red">
+      <div class="sechead"><span class="secnum">01</span><span class="sectag">The big picture</span></div>
+      <h2>Two properties. <span class="hl">One brand.</span></h2>
+      <p class="intro">You are building <b>two separate things</b> joined by a single brand and a single workspace. A public <b>marketing website</b> that wins work, and a private <b>Studio app</b> that runs it. Claude Code is the one app you drive both from, a normal Mac window you simply chat to. Nothing here needs you to become a developer. You describe what you want in plain English and it builds it.</p>
+
+      <div class="arch">
+        <div class="top">
+          <div class="archnode hub">
+            <div class="role">You drive it all from one place</div>
+            <div class="nm">Justin + Claude Code</div>
+          </div>
+        </div>
+        <div class="stem"></div>
+        <div class="branch">
+          <div class="legwrap"><div class="pcard c-web"><div class="tag">Cloudflare</div><h4>Marketing site</h4><p>toughcrowd.studio. The shop window that wins work. Free to host.</p></div></div>
+          <div class="legwrap"><div class="pcard c-app"><div class="tag">Vercel + Supabase</div><h4>Studio app</h4><p>Your private cockpit. Projects, time, money, capacity. Login locked to you.</p></div></div>
+          <div class="legwrap"><div class="pcard c-pay"><div class="tag">Resend</div><h4>Email engine</h4><p>Sign-in links, client updates, and deadline alerts to you, from your own domain.</p></div></div>
+          <div class="legwrap"><div class="pcard c-wire"><div class="tag">Connectors</div><h4>Your tools</h4><p>Google Workspace, Adobe, Apple. Claude reads and acts inside what you already use.</p></div></div>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <div class="ct">The order that matters</div>
+        <p>Build the website first and let it win the first job before you build the app. <b>The site is the revenue engine. The app is the retention and margin engine.</b> Do not build clever internal tooling while your pipeline is empty. That is the single most common way a launch like this stalls.</p>
+      </div>
+    </section>
+
+    <!-- 02 ROADMAP -->
+    <section id="roadmap" class="s-red">
+      <div class="sechead"><span class="secnum">02</span><span class="sectag">The roadmap</span></div>
+      <h2>Six phases. <span class="hl">Ship as you go.</span></h2>
+      <p class="intro">Do not build all of this at once. Each phase produces something usable on its own, so you are never sitting on a half-built thing that earns nothing. Phases 0 and 1 are the only real launch. Everything after is sharpening a business that is already taking enquiries.</p>
+
+      <div class="road">
+        <div class="phase p0">
+          <div class="pl"><span class="pnum">0</span><span class="pdur">½ to 1 day</span><span class="pbar"></span></div>
+          <div><h4>Setup &amp; the operating brain</h4>
+            <ul>
+              <li>Claude Code installed and signed in, on a safe permission mode</li>
+              <li>Fresh accounts: Cloudflare, Vercel, Supabase, Resend</li>
+              <li><b>A studio-wide CLAUDE.md</b> holding your voice, pricing rules and the rule that hours stay hidden</li>
+              <li>toughcrowd.studio sitting in Cloudflare with DNS and SSL sorted</li>
+            </ul>
+          </div>
+        </div>
+        <div class="phase p1">
+          <div class="pl"><span class="pnum">1</span><span class="pdur">3 to 5 days</span><span class="pbar"></span></div>
+          <div><h4>Get found and take enquiries — the only real launch</h4>
+            <ul>
+              <li>Marketing site live with the "stand out from the noise" positioning</li>
+              <li>Budget-led enquiry form landing in a Sheet, with a Resend confirmation</li>
+              <li>A one-page terms/scope template and a UK VAT-compliant (HMRC) invoice format</li>
+              <li>A short privacy notice published. <b>This is the point you can win work.</b></li>
+            </ul>
+          </div>
+        </div>
+        <div class="phase p2">
+          <div class="pl"><span class="pnum">2</span><span class="pdur">4 to 7 days</span><span class="pbar"></span></div>
+          <div><h4>Close and get paid without leaks</h4>
+            <ul>
+              <li>Proposal generated from the Google Sheet pricing line. Client sees value, not hours</li>
+              <li>A contract/e-sign step paired with the Stripe deposit, so signature and money happen together</li>
+              <li>Resend domain verified, sending from noreply@toughcrowd.studio</li>
+            </ul>
+          </div>
+        </div>
+        <div class="phase p3">
+          <div class="pl"><span class="pnum">3</span><span class="pdur">1 to 2 weeks</span><span class="pbar"></span></div>
+          <div><h4>The Studio app core and the one number that matters</h4>
+            <ul>
+              <li>The app on Vercel + Supabase, magic-link login, locked to you</li>
+              <li>Dashboard, Projects with the reddening-deadline rule, time tracking</li>
+              <li><b>The Profitability Loop</b>: your real effective hourly rate per job</li>
+              <li>Automated weekly database backup to Drive, restore tested once</li>
+            </ul>
+          </div>
+        </div>
+        <div class="phase p4">
+          <div class="pl"><span class="pnum">4</span><span class="pdur">3 to 5 days</span><span class="pbar"></span></div>
+          <div><h4>Pipeline intelligence and capacity</h4>
+            <ul>
+              <li>CRM pipeline with win rate by source and budget band</li>
+              <li>Availability and capacity view so you stop overcommitting</li>
+              <li>Internal reddening-deadline alert emails on a daily Resend cron</li>
+            </ul>
+          </div>
+        </div>
+        <div class="phase p5">
+          <div class="pl"><span class="pnum">5</span><span class="pdur">demand-led</span><span class="pbar"></span></div>
+          <div><h4>Recurring revenue &amp; handover polish</h4>
+            <ul>
+              <li>A Brandpad-style guidelines viewer, share-link first</li>
+              <li>A brand-guardianship retainer offer, defined and priced</li>
+              <li>Testimonial and referral capture baked into the final-delivery email</li>
+              <li>The "one SVG, every output" auto-export, explored as a margin feature</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 SETUP -->
+    <section id="setup" class="s-setup">
+      <div class="sechead"><span class="secnum">03</span><span class="sectag">Phase 0 · Setup</span></div>
+      <h2>From a blank Mac to a <span class="hl">working studio brain.</span></h2>
+      <p class="intro">About 15 minutes, no technical skill needed. <b>Claude Code comes as a friendly desktop app for Mac</b>, a normal window where you chat in plain English and watch it work on the files and services on your Mac. That is where you live. A Terminal exists underneath for the rare one-off, but day to day you never open it.</p>
+
+      <h3>Set up the app, step by step</h3>
+      <div class="steps">
+        <div class="step accent-num" style="color:var(--setup)">
+          <div class="num"></div>
+          <div class="body"><h4>Download the Claude Code desktop app</h4><p>Go to claude.com/claude-code and download the Mac app. Open the downloaded file and drag Claude Code into your Applications folder, exactly like installing any other Mac app. No Terminal, no developer tools, nothing technical.</p></div>
+        </div>
+        <div class="step accent-num" style="color:var(--setup)">
+          <div class="num"></div>
+          <div class="body"><h4>Open it and sign in</h4><p>Launch the app and click Sign in. Use your Claude Pro account ($20/mo), the same login as the Claude website. Pro is a flat, predictable fee and far cheaper than pay-per-use for daily work. Move up to Max only if you ever hit limits.</p>
+            <div class="callout warn" style="margin-top:11px"><div class="ct">Stay on the subscription</div><p>Just sign in with your Claude account inside the app. Do not paste an API key in anywhere, that quietly switches you to pricier pay-per-use billing.</p></div>
+          </div>
+        </div>
+        <div class="step accent-num" style="color:var(--setup)">
+          <div class="num"></div>
+          <div class="body"><h4>Point it at a folder</h4><p>In the app choose Open project (or New project) and pick a folder on your Mac, for example one called tough-crowd on your Desktop. That folder becomes the workspace for this work. Each client gets its own folder later.</p></div>
+        </div>
+        <div class="step accent-num" style="color:var(--setup)">
+          <div class="num"></div>
+          <div class="body"><h4>Start talking</h4><p>Type what you want in the chat box, just like messaging the Claude app, and it does the work and shows you what changed. That is the whole loop, and you do it all in a normal window, never a terminal.</p></div>
+        </div>
+      </div>
+
+      <div class="callout note"><div class="ct">If you ever do need the Terminal</div><p>You almost never will. A handful of one-off jobs are quickest as a single pasted line, and when that happens the app can run it for you, or you open Terminal (Cmd+Space, type Terminal) and paste. The one line you might ever need, as an alternative to the app installer above, is below. Skip it unless something specifically asks for it.</p>
+        <div class="cmd"><div class="cmdhead"><span class="lbl">Terminal · only if needed</span><button class="copy">Copy</button></div><pre>curl -fsSL https://claude.ai/install.sh | bash</pre></div>
+      </div>
+
+      <h3>The single most important file you'll create</h3>
+      <p>CLAUDE.md is a plain text file the app reads automatically every time you open the project, and treats as standing instructions. Think of it as <b>the studio's operating brain</b>. You do not type it out yourself; just ask Claude in the app to create it, then refine it. Write down once what you would otherwise repeat forever: your rates, your hidden-hours rule, your voice, your folders, your do/don't rules. The quality of everything Claude makes for you rises and falls on this file. The critic flagged it as the cheapest, highest-leverage thing in the whole plan, and it costs nothing.</p>
+
+      <div class="cmd"><div class="cmdhead"><span class="lbl">Paste into the app and say "save this as CLAUDE.md" — refine over time</span><button class="copy">Copy</button></div><pre><span class="cc"># Tough Crowd Studio — operating brain</span>
+
+<span class="cc">## Who we are</span>
+Tough Crowd Studio. Owner: Justin Murtagh. Branding and rebranding specialist.
+25 years of professional judgement. Positioning: "Stand out from the noise."
+We sell taste and judgement, not hours.
+
+<span class="cc">## Pricing rules (enforce these)</span>
+- Price reflects experience and outcome, never hours.
+- NEVER show hours, day-rates or time estimates to a client.
+- The Google Sheet is the single source of truth for pricing. Read it, never duplicate it.
+- All client-facing money in pounds sterling, fixed project fees, presented as value not effort.
+
+<span class="cc">## Brand voice (all written output)</span>
+- UK English. No em dashes, ever.
+- Confident, sharp, no hype, no filler. Premium and human.
+- Never sound like first-generation AI output.
+
+<span class="cc">## Folder structure</span>
+- One folder per client under ~/Desktop/clients/&lt;client-name&gt;/
+- Each client folder has its own CLAUDE.md with that client's brief and voice.
+
+<span class="cc">## Do / Don't</span>
+- DO explain what you're about to do in plain English before you do it.
+- DO warn me before anything that deletes, overwrites or goes live.
+- DON'T send any email automatically. Draft only. I send.
+- DON'T deploy to the live site without asking. DON'T invent client facts.</pre></div>
+
+      <h3>How it all connects</h3>
+      <div class="grid g3">
+        <div class="card"><div class="ic">MCP connectors</div><p class="muted" style="font-size:14px;margin:8px 0 0">The standard way Claude plugs into outside services, like a USB port for software. One plug for Cloudflare, one for Google Drive, and so on. You add them in the app's settings, or just ask Claude to connect one, then approve in your browser.</p></div>
+        <div class="card"><div class="ic">Skills &amp; subagents</div><p class="muted" style="font-size:14px;margin:8px 0 0">A Skill is a saved set of instructions for a task you repeat. A subagent is a specialist Claude hands a job to. You don't need either on day one. Add them when you catch yourself repeating instructions.</p></div>
+        <div class="card"><div class="ic">Cloudflare ↔ Claude</div><p class="muted" style="font-size:14px;margin:8px 0 0">The official Cloudflare plugin installs the connector and the deploy tool together, so you can say "deploy the latest site" or "add a DNS record" and Claude does it.</p></div>
+      </div>
+
+      <div class="callout warn">
+        <div class="ct">Safety, while you build confidence</div>
+        <p>The app asks for your approval before it edits a file or runs anything. Stay on that default. The key tool is <b>Plan Mode</b>, a toggle in the app: Claude writes out exactly what it would do and changes nothing until you click approve. Use it for anything expensive to get wrong, going live, deleting, payments, DNS.</p>
+      </div>
+    </section>
+
+    <!-- 04 WEBSITE -->
+    <section id="website" class="s-web">
+      <div class="sechead"><span class="secnum">04</span><span class="sectag">Phase 1 · The website</span></div>
+      <h2>The shop window that <span class="hl">does the qualifying.</span></h2>
+      <p class="intro">A tight, finished site that wins work. <b>Fewer pages, each one done properly.</b> An eight-page site half-built contradicts the entire pitch. The whole thing hosts free on Cloudflare Pages. Here is the positioning, the structure, and the copy to start from.</p>
+
+      <h3>The site, roughly</h3>
+      <div class="window site-mock">
+        <div class="winbar"><div class="dots"><i></i><i></i><i></i></div><div class="url"><span>toughcrowd.studio</span></div></div>
+        <div class="nav-mk">
+          <span class="lg">Tough <b>Crowd</b></span>
+          <span class="lks"><span>Work</span><span>Services</span><span>The Noise</span><span>About</span></span>
+          <span class="cta-mk">Book a call</span>
+        </div>
+        <div class="hero-mk">
+          <h3 class="mkh">Stand out from the <em>noise.</em></h3>
+          <p class="mksub">AI made average instant. It made distinctive rare. Branding and rebranding, judged by 25 years of taste, not a template.</p>
+          <span class="cta-mk">Tell us about your project →</span>
+        </div>
+      </div>
+
+      <h3>The thesis, in Justin's voice</h3>
+      <p>AI has made it cheap to produce something that passes at a glance. A logo in ten seconds. A brand system by Friday. Most of it is the same handful of moves dressed differently, shipped by people who can't tell the difference because they've never had to. <b>That's the noise.</b> The work that stands out now isn't louder, it's considered. It carries a decision behind every choice, made by someone who has made that decision ten thousand times. That judgement is the whole job, and it's the one thing that can't be generated.</p>
+      <div class="callout note"><div class="ct">Tone note</div><p>Grounded, not preachy. The argument wins by being obviously true to anyone who has stared at a wall of identikit brands, not by declaring war on AI. Justin uses the tools too. Taste sits above the tool, not against it.</p></div>
+
+      <h3>Three headline options</h3>
+      <div class="heads">
+        <div class="headopt">
+          <div class="ho">Option A<span class="rec">· recommended, leads with the thesis</span></div>
+          <div class="hh">Stand out from the noise.</div>
+          <p>AI made average instant. It made distinctive rare. Branding and rebranding, judged by 25 years of taste, not a template.</p>
+        </div>
+        <div class="headopt">
+          <div class="ho">Option B<span>· leads with the buyer's problem</span></div>
+          <div class="hh">Everyone's brand looks the same now.</div>
+          <p>Tough Crowd builds the ones that don't. Branding and rebranding with a human at the wheel.</p>
+        </div>
+        <div class="headopt">
+          <div class="ho">Option C<span>· leads with the person</span></div>
+          <div class="hh">25 years of judgement. One studio.</div>
+          <p>Branding and rebranding by Justin Murtagh, formerly Senior Creative Director at Ornua. The work that survives the noise.</p>
+        </div>
+      </div>
+      <div class="callout tip"><div class="ct">About copy that does the work</div><p>Don't write a CV, write a claim. The Ornua/Kerrygold line is a credibility anchor a non-design buyer recognises instantly. End on the pricing thesis: <b>"You're not paying for hours. You're paying for the calls I make in them."</b> Repeat that line near the services and the enquiry form.</p></div>
+
+      <h3>The services menu</h3>
+      <p class="muted">Two layers. The client sees fixed "from" prices that signal the level of judgement. You keep the hours private, as the basis of your effective rate. Never show the hours.</p>
+      <div class="tiers">
+        <div class="tier"><div class="tn">Brand refresh</div><div class="tp">from £6k</div><p>For a brand that's tired, not broken. Sharpened identity, refreshed application. You keep your equity.</p><div class="hid">~40h · <b>~£150/hr</b></div></div>
+        <div class="tier"><div class="tn">Full identity</div><div class="tp">from £15k</div><p>Ground-up brand for a launch or serious pivot. Strategy, name direction, system, voice, guidelines hub.</p><div class="hid">~90h · <b>~£167/hr</b></div></div>
+        <div class="tier flag"><div class="tn">Rebrand · flagship</div><div class="tp">from £30k</div><p>A complete repositioning for a business that has outgrown how it looks. Strategy, identity, rollout, the lot.</p><div class="hid">~150h · <b>~£200/hr</b></div></div>
+        <div class="tier"><div class="tn">Brand partner</div><div class="tp">from £3.5k<small>/mo</small></div><p>Ongoing creative direction for founders who want your judgement on call. The recurring revenue floor.</p><div class="hid">~15h/mo · <b>~£233/hr</b></div></div>
+      </div>
+      <div class="callout cost"><div class="ct">The pattern is deliberate</div><p>Higher tiers carry the higher effective rate, because that's where your judgement is most concentrated and least substitutable. The purple line is for your eyes only. It lives in your pricing Sheet, never on the site.</p></div>
+
+      <h3>The enquiry form, and why you ask for budget</h3>
+      <div class="grid g2">
+        <div class="window">
+          <div class="winbar"><div class="dots"><i></i><i></i><i></i></div><div class="url"><span>Tell us about your project</span></div></div>
+          <div class="form-mk">
+            <div class="fld">Name <span class="req">required</span></div>
+            <div class="fld">Company</div>
+            <div class="fld">Project type: New brand / Rebrand / Refresh / Not sure</div>
+            <div class="chips"><span class="chip on">Branding</span><span class="chip">Naming</span><span class="chip on">Rebrand</span><span class="chip">Guidelines</span></div>
+            <div class="fld">Timeline: ASAP / 1–3mo / 3–6mo / Exploring</div>
+            <div class="fld" style="border-color:var(--web);color:var(--web)">Budget: &lt;£6k / £6–15k / £15–30k / £30k+ / Not sure</div>
+            <div class="fld">In a sentence, what's prompting this?</div>
+          </div>
+        </div>
+        <div>
+          <h4>Budget is a respect question, not a rude one</h4>
+          <p class="muted" style="font-size:14.5px">It tells the client you intend to scope the work to what they can actually spend, instead of designing something they can't afford. For a premium studio it does three jobs: filters tyre-kickers before they eat your calendar, anchors the conversation at the value level, and lets you walk into the call already knowing if this is a £6k refresh or a £40k rebrand.</p>
+          <p class="muted" style="font-size:14.5px">The line that removes the awkwardness: <b style="color:#fff">"This helps me recommend the right level of work. No wrong answer, and 'not sure yet' is fine."</b></p>
+          <div class="callout tip" style="margin-top:14px"><div class="ct">Wire it up</div><p>Set the form to drop a row into Google Sheets and fire a Resend confirmation to the enquirer plus an alert to you. Keep it short. Every extra field costs you a serious enquiry.</p></div>
+        </div>
+      </div>
+
+      <h3>Hosting it on Cloudflare</h3>
+      <p class="muted">Cloudflare is both your DNS (the phone book that points the domain at the site) and your host, which is why custom domain and SSL setup is almost fully automatic once the domain is in your account.</p>
+      <div class="steps">
+        <div class="step accent-num" style="color:var(--web)"><div class="num"></div><div class="body"><h4>Create a free Cloudflare account and add the domain</h4><p>Sign up at dash.cloudflare.com, turn on two-factor. Easiest route for a fresh start: register toughcrowd.studio directly through Cloudflare, where it arrives pre-wired for DNS and SSL. No card needed for the free tier.</p></div></div>
+        <div class="step accent-num" style="color:var(--web)"><div class="num"></div><div class="body"><h4>Deploy in one step (you just ask the app)</h4><p>You'll just say "deploy the latest site" in the chat. Under the hood it's wrangler, Cloudflare's deploy tool, but Claude runs it. Each push is a new versioned deployment you can roll back, so it's safe to repeat as often as you like.</p>
+          <div class="cmd"><div class="cmdhead"><span class="lbl">What Claude runs for you</span><button class="copy">Copy</button></div><pre>npx wrangler pages project create toughcrowd-studio
+npx wrangler pages deploy ./out --project-name toughcrowd-studio</pre></div></div></div>
+        <div class="step accent-num" style="color:var(--web)"><div class="num"></div><div class="body"><h4>Connect the domain</h4><p>In Workers &amp; Pages, open the project, Custom domains, add toughcrowd.studio. Cloudflare adds the DNS record and SSL certificate for you in the background. A one-time click, then forget it.</p></div></div>
+      </div>
+      <div class="callout cost"><div class="ct">Cost: effectively zero</div><p>Cloudflare Pages free tier is unusually generous: unlimited bandwidth and requests, 500 builds a month, 20,000 files. For a solo studio marketing site, expect to pay nothing, possibly ever. The ~£50–55/mo figure elsewhere is for the separate Studio app, not this site.</p></div>
+    </section>
+
+    <!-- 05 PROPOSALS -->
+    <section id="proposals" class="s-pay">
+      <div class="sechead"><span class="secnum">05</span><span class="sectag">Phase 2 · Proposals &amp; payment</span></div>
+      <h2>One Sheet of truth. <span class="hl">A document that sells.</span></h2>
+      <p class="intro">A proposal system where the <b>job type pulls the right chapters</b> and the price comes from one Google Sheet your accountant can also read. The client sees chapters, judgement and a single investment figure. The hours and rate never leave the Sheet.</p>
+
+      <h3>How it flows</h3>
+      <p class="muted">Enquiry in → you pick the job type → the system pulls the matching chapters and the matching price → Claude drafts the text in your voice → out comes a branded PDF with a deposit link → client pays the 50%, work starts. Nothing is re-typed between stages.</p>
+
+      <div class="grid g2">
+        <div>
+          <h4>The pricing source of truth</h4>
+          <p class="muted" style="font-size:14px">One Sheet. Services, hidden hours, rate, line total, and a job-type tag. The proposal reads the relevant rows, sums them, and inserts <b style="color:var(--pay)">one</b> investment figure. Hours and rate stay behind.</p>
+          <div class="window" style="margin-top:12px">
+            <div class="winbar"><div class="dots"><i></i><i></i><i></i></div><div class="url"><span>tough-crowd-pricing</span></div></div>
+            <div class="sheet">
+              <div class="srow hd"><div>Service</div><div>Hrs</div><div>Rate</div><div>Line</div><div>Job type</div></div>
+              <div class="srow"><div>Strategy</div><div class="hid">22</div><div class="hid">£185</div><div class="tot">£4,070</div><div>Rebrand</div></div>
+              <div class="srow"><div>Identity system</div><div class="hid">68</div><div class="hid">£185</div><div class="tot">£12,580</div><div>Rebrand</div></div>
+              <div class="srow"><div>Rollout + guidelines</div><div class="hid">60</div><div class="hid">£185</div><div class="tot">£11,100</div><div>Rebrand</div></div>
+              <div class="srow"><div style="color:var(--pay);font-weight:700">Total to client</div><div class="hid">—</div><div class="hid">—</div><div class="tot">£27,750</div><div></div></div>
+            </div>
+            <div class="tabbar"><span class="tb on">Client price</span><span class="tb">Hidden hours</span><span class="tb">Accountant</span></div>
+          </div>
+        </div>
+        <div>
+          <h4>The chapter library</h4>
+          <p class="muted" style="font-size:14px">Write each chapter once in your voice with placeholders. A "job type" is just a playlist of which chapters to include. A logo refresh skips the heavy Approach chapter, a full rebrand uses them all.</p>
+          <div class="window" style="margin-top:12px">
+            <div class="winbar"><div class="dots"><i></i><i></i><i></i></div><div class="url"><span>Rebrand proposal · Acme</span></div></div>
+            <div class="doc">
+              <div class="chapters">
+                <div class="ch"><span class="ci">01</span>Cover</div>
+                <div class="ch"><span class="ci">02</span>The challenge</div>
+                <div class="ch"><span class="ci">03</span>Our approach</div>
+                <div class="ch"><span class="ci">04</span>Scope &amp; deliverables</div>
+                <div class="ch"><span class="ci">05</span>Timeline</div>
+                <div class="ch spot"><span class="ci">06</span>25 years of experience</div>
+                <div class="ch spot"><span class="ci">07</span>Investment</div>
+                <div class="ch"><span class="ci">08</span>Terms &amp; next steps</div>
+              </div>
+              <div class="page">
+                <div class="invest"><div class="il">Investment</div><div class="iv">£27,750</div><div class="ix">value, not hours</div></div>
+                <a class="depbtn">Pay 50% deposit · Stripe</a>
+                <div class="terms">50% on signature · 50% on delivery</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout cost"><div class="ct">Deposits &amp; Stripe fees</div><p>Two Stripe Payment Links per project: 50% at signature, 50% on delivery. UK card fee is 1.5% + 20p per transaction; EEA cards 2.5% + 20p, international 3.25% + 20p (verified June 2026). On a £5,000 deposit from a UK client that's roughly £75. Build it into your rate, never surface it to the client.</p></div>
+
+      <div class="callout warn"><div class="ct">The critic's flag: do not skip this</div><p>The plan jumps from proposal to deposit. <b>Put a signed scope between them.</b> The unsigned-scope gap is where free revisions, scope creep and non-payment live. A simple terms-plus-scope doc with e-sign (or a countersigned PDF logged in Supabase), paired with the deposit so signature and money happen together. And a proper UK VAT invoice, not just a payment link, so your accountant can reconcile it.</p></div>
+
+      <div class="callout note"><div class="ct">The honest risk</div><p>This system makes pricing fast, not accurate. If the Sheet's hours are wishful, the figure drifts from reality and you quietly underprice premium work. Audit the Sheet against actual project effort every quarter. That part stays your judgement.</p></div>
+    </section>
+
+    <!-- 06 STUDIO APP -->
+    <section id="app" class="s-app">
+      <div class="sechead"><span class="secnum">06</span><span class="sectag">Phase 3 · The Studio app</span></div>
+      <h2>Your private cockpit, and the <span class="hl">one number that matters.</span></h2>
+      <p class="intro">A bespoke app only you log into. Six linked tables underneath, six modules on top. Build the data foundation and dashboard first, then add modules one at a time. <b>Everything else exists to feed one number: your real effective hourly rate per job.</b></p>
+
+      <h3>What it looks like</h3>
+      <div class="window">
+        <div class="winbar"><div class="dots"><i></i><i></i><i></i></div><div class="url"><span>studio.toughcrowd.studio</span></div></div>
+        <div class="dash">
+          <div class="side">
+            <div class="si on"><span class="sq"></span>Dashboard</div>
+            <div class="si"><span class="sq"></span>Projects</div>
+            <div class="si"><span class="sq"></span>Time</div>
+            <div class="si"><span class="sq"></span>Profitability</div>
+            <div class="si"><span class="sq"></span>Availability</div>
+            <div class="si"><span class="sq"></span>Pipeline</div>
+          </div>
+          <div class="main">
+            <div class="statstrip">
+              <div class="stat"><div class="sv">7</div><div class="sk">Open projects</div></div>
+              <div class="stat"><div class="sv">31h</div><div class="sk">Tracked / week</div></div>
+              <div class="stat"><div class="sv">9h</div><div class="sk">Free this week</div></div>
+              <div class="stat"><div class="sv">64%</div><div class="sk">Win rate</div></div>
+            </div>
+            <div class="urgent">
+              <div class="uh"><span style="width:7px;height:7px;border-radius:50%;background:var(--red);display:inline-block"></span>What's urgent today</div>
+              <div class="urow red"><span>Logo pack · Acme rebrand</span><span class="due">OVERDUE · 1 day</span></div>
+              <div class="urow orange"><span>Tone of voice draft · Bó</span><span class="due">DUE IN 2 DAYS</span></div>
+              <div class="urow amber"><span>Proposal follow-up · Greenfield</span><span class="due">UNANSWERED 6 DAYS</span></div>
+            </div>
+            <div class="cols2">
+              <div class="projlist">
+                <div class="pj"><span class="pjdot" style="background:var(--d-red)"></span>Acme · full rebrand</div>
+                <div class="pj"><span class="pjdot" style="background:var(--d-orange)"></span>Bó · brand voice</div>
+                <div class="pj"><span class="pjdot" style="background:var(--d-amber)"></span>Harvest · identity</div>
+                <div class="pj"><span class="pjdot" style="background:var(--d-green)"></span>Slate · refresh</div>
+              </div>
+              <div class="profit">
+                <div class="ph">Profitability · Acme rebrand</div>
+                <div class="prow"><span class="lbl">Quoted hidden hours</span><span>150h</span></div>
+                <div class="prow"><span class="lbl">Actual tracked</span><span>138h</span></div>
+                <div class="prow"><span class="lbl">Effective rate</span><span class="big">£201/hr</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3>The deadline colour rule</h3>
+      <p class="muted">Define it once as a shared function so a colour means the same thing on every screen. Subtasks move from calm to alarming as the deadline approaches and after it passes.</p>
+      <div class="scale">
+        <div class="seg green"><div class="lab">Green</div><div class="rng">More than 7 days</div></div>
+        <div class="seg amber"><div class="lab">Amber</div><div class="rng">3 to 7 days</div></div>
+        <div class="seg orange"><div class="lab">Orange</div><div class="rng">1 to 3 days</div></div>
+        <div class="seg red"><div class="lab">Red</div><div class="rng">Under 1 day or overdue</div></div>
+      </div>
+
+      <h3>The six modules</h3>
+      <div class="grid g2">
+        <div class="card"><h4 style="color:var(--app)">1 · Dashboard</h4><p class="muted" style="font-size:14px;margin:0">A "what's urgent today" panel, three at-a-glance columns (active projects, prospects, headline numbers), live from every other module. The only screen you need open most days.</p></div>
+        <div class="card"><h4 style="color:var(--app)">2 · Projects &amp; subtasks</h4><p class="muted" style="font-size:14px;margin:0">Each project has a client, delivery date, quoted price and subtasks. The reddening colour rule runs everywhere. Add, reorder and tick off subtasks.</p></div>
+        <div class="card"><h4 style="color:var(--app)">3 · Time tracking</h4><p class="muted" style="font-size:14px;margin:0">One-tap start/stop timer on a subtask, plus manual entry. Rolls up into project totals. The raw fuel for the Profitability Loop.</p></div>
+        <div class="card" style="border-color:var(--app)"><h4 style="color:var(--app)">4 · The Profitability Loop ★</h4><p class="muted" style="font-size:14px;margin:0">Quoted hidden hours (price ÷ your rate) vs actual tracked hours = your real effective rate per job. Green at or above target, red below. The reason the app exists.</p></div>
+        <div class="card"><h4 style="color:var(--app)">5 · Availability &amp; capacity</h4><p class="muted" style="font-size:14px;margin:0">Block school pickups, holidays, days off. Daily and weekly views of remaining hours so you stop overcommitting. Connect Google Calendar later.</p></div>
+        <div class="card"><h4 style="color:var(--app)">6 · CRM pipeline</h4><p class="muted" style="font-size:14px;margin:0">Prospect → Proposal sent → Won / Lost, with win rate visible. Mark Won and it offers to spin up a project. Covered next.</p></div>
+      </div>
+
+      <h3>You build it by talking. For example:</h3>
+      <div class="window">
+        <div class="winbar"><div class="dots"><i></i><i></i><i></i></div><div class="url"><span>Claude Code · studio</span></div></div>
+        <div class="term">
+<span class="dim">Claude Code desktop app · tough-crowd / studio</span><br><br>
+<span class="u">You</span>&nbsp;&nbsp;Build the Projects module. A project has a client, delivery date,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;quoted price and subtasks, each with its own date and a done checkbox.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Colour each subtask by days remaining, written once as a shared function<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and reused everywhere: green over 7 days, amber 3 to 7, orange 1 to 3,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;red under 1 day or overdue. Completed subtasks turn grey.<br><br>
+<span class="ai">●</span> <span class="out"><span class="ai">Claude</span>&nbsp;&nbsp;I'll add a shared <span class="ai">deadlineColour()</span> helper, the Projects table, and the UI.</span><br>
+<span class="ai">●</span> <span class="out">Plan ready. Review before I make the changes?</span> &nbsp;<span class="ok">[ Approve ]</span> <span class="dim">[ Adjust ]</span>
+        </div>
+      </div>
+
+      <div class="callout warn"><div class="ct">Vercel Pro from day one</div><p>Vercel's free Hobby tier is non-commercial only, so a client-facing business app must be on Pro (~£16/mo) from launch. Supabase free pauses a project after 7 days idle, so move it to Pro (~£20/mo) before it's load-bearing. This does not affect the marketing site, which stays free on Cloudflare.</p></div>
+    </section>
+
+    <!-- 07 PIPELINE -->
+    <section id="pipeline" class="s-pipe">
+      <div class="sechead"><span class="secnum">07</span><span class="sectag">Phase 4 · Pipeline &amp; capacity</span></div>
+      <h2>Know what converts. <span class="hl">Protect your time.</span></h2>
+      <p class="intro">Two things a solo operator needs and rarely has: a clear read on which enquiries actually become work, and an honest view of how much capacity is left before saying yes to the next one.</p>
+
+      <h3>The pipeline</h3>
+      <div class="kanban">
+        <div class="kcol"><div class="kh"><span>Prospect</span><span>3</span></div>
+          <div class="kcard"><div class="kn">Greenfield Foods</div><div class="kv">Rebrand · £30k+</div></div>
+          <div class="kcard"><div class="kn">North Mill</div><div class="kv">Refresh · £6–15k</div></div>
+          <div class="kcard"><div class="kn">Verde</div><div class="kv">Not sure yet</div></div>
+        </div>
+        <div class="kcol"><div class="kh"><span>Proposal sent</span><span>2</span></div>
+          <div class="kcard"><div class="kn">Acme</div><div class="kv">£27,750 · viewed 3×</div></div>
+          <div class="kcard"><div class="kn">Bó Studio</div><div class="kv">£15,400 · sent</div></div>
+        </div>
+        <div class="kcol won"><div class="kh"><span>Won</span><span>5</span></div>
+          <div class="kcard"><div class="kn">Harvest</div><div class="kv">£18,900 · referral</div></div>
+          <div class="kcard"><div class="kn">Slate</div><div class="kv">£6,000 · website</div></div>
+        </div>
+        <div class="kcol lost"><div class="kh"><span>Lost</span><span>3</span></div>
+          <div class="kcard"><div class="kn">Pivot Co</div><div class="kv">budget · £30k+</div></div>
+        </div>
+      </div>
+      <div class="winrate"><b>64%</b><span>win rate · won ÷ (won + lost), shown on the dashboard too</span></div>
+
+      <p style="margin-top:22px">The critic's addition: don't stop at a list of leads. The numbers worth surfacing are <b>win rate by lead source and by budget band, and average deal size</b>. Those tell you which enquiries to chase and which to decline. For a premium positioning play, a healthy decline-and-still-win rate is the proof the strategy works. It's a few queries on data you're already storing.</p>
+
+      <h3>Capacity, so you don't overcommit</h3>
+      <p class="muted">Set a normal working day, block out the real-life stuff (school pickups, holidays, days off), and the app shows remaining available hours by day and by week. It feeds the "free this week" number on the dashboard, and it's the honest answer to "can I take this on?".</p>
+
+      <div class="callout tip"><div class="ct">Deadline alerts, automated</div><p>Reuse the exact amber/red thresholds from the app to fire internal emails to you on a daily Resend cron: <b>"AMBER: Bó tone of voice due in 2 days"</b>, <b>"OVERDUE: Acme logo pack, 1 day late"</b>. The subject carries the state so it's scannable on your phone. One sender, one recipient, no client ever sees it. Lock the cron endpoint behind a secret so nobody else can trigger it.</p></div>
+    </section>
+
+    <!-- 08 BRANDPAD -->
+    <section id="brandpad" class="s-brand">
+      <div class="sechead"><span class="secnum">08</span><span class="sectag">Phase 5 · Living guidelines</span></div>
+      <h2>Your own Brandpad. <span class="hl">And a recurring revenue floor.</span></h2>
+      <p class="intro">A hosted home for each client's brand: copyable colours, downloadable fonts with their licences, logos in every variant, an asset library, clear do/don't rules. Brandpad charges $50 to $125 a month for this, which tells you <b>clients already pay monthly to keep guidelines live.</b> That's your opening.</p>
+
+      <h3>What it looks like</h3>
+      <div class="window">
+        <div class="winbar"><div class="dots"><i></i><i></i><i></i></div><div class="url"><span>studio.toughcrowd.studio/acme</span></div></div>
+        <div class="guide">
+          <div class="swatches">
+            <div class="sw"><div class="chip" style="background:#1a1a2e"></div><div class="meta"><div class="hex">#1A1A2E <span class="cp">copy</span></div><div class="nm">Ink</div></div></div>
+            <div class="sw"><div class="chip" style="background:#e94560"></div><div class="meta"><div class="hex">#E94560 <span class="cp">copy</span></div><div class="nm">Signal</div></div></div>
+            <div class="sw"><div class="chip" style="background:#f5f5f0"></div><div class="meta"><div class="hex">#F5F5F0 <span class="cp">copy</span></div><div class="nm">Paper</div></div></div>
+            <div class="sw"><div class="chip" style="background:#16c79a"></div><div class="meta"><div class="hex">#16C79A <span class="cp">copy</span></div><div class="nm">Mint</div></div></div>
+            <div class="sw"><div class="chip" style="background:#ffd460"></div><div class="meta"><div class="hex">#FFD460 <span class="cp">copy</span></div><div class="nm">Sun</div></div></div>
+          </div>
+          <div class="typ">
+            <div class="tbig">Aa Bb Cc 123</div>
+            <div class="tmeta"><span>Space Grotesk · Display</span><span>licence: SIL OFL · download ↓</span></div>
+          </div>
+          <div class="logos">
+            <div class="logobox light">acme<span class="vl">light · 6 sizes</span></div>
+            <div class="logobox dark">acme<span class="vl">dark · 6 sizes</span></div>
+            <div class="logobox mono">acme<span class="vl">mono · 6 sizes</span></div>
+          </div>
+          <div class="dodont">
+            <div class="dd do"><div class="h">✓ Do</div>Keep clear space. Use approved colourways. Hold the proportions.</div>
+            <div class="dd dont"><div class="h">✕ Don't</div>Stretch it. Recolour it. Add a drop shadow. Put it on a busy photo.</div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Build the easy 80% first</h3>
+      <p>One brand record, two filtered views (a clean shareable version and a detailed internal one), never two documents that drift. Colour palette with copy buttons, typography with licences, do/don't, asset library: all structured content rendered nicely, well within Claude Code's range over a few sessions.</p>
+
+      <div class="callout warn"><div class="ct">The "one SVG, every output" idea: real, but phase two</div><p>Feasible with <b>sharp</b> (a fast Node image library). Sizes are easy. Colour variants need cleanly authored SVGs. And the classic trap: if your logo SVG uses live text, the renderer may drop the font, so <b>outline all text to paths first</b>. Build it as a standalone script you run on client work before wiring it into the app. Hold this line: it's a margin-improver later, never a launch blocker.</p></div>
+
+      <div class="callout cost"><div class="ct">Why this is the real prize</div><p>Your platform cost is flat at ~£50–55/mo regardless of how many client brands you host, because they share one app. Charge even £20–40/mo per hosted brand and everything after the first few is near pure margin. It lands best with SME and founder brands, not enterprise (who often run their own systems). Frame it as <b>keeping the brand live and governed</b>, the visible proof the work is human-judged, not as software.</p></div>
+    </section>
+
+    <!-- 09 CONNECTORS -->
+    <section id="connectors" class="s-wire">
+      <div class="sechead"><span class="secnum">09</span><span class="sectag">Connectors &amp; custom agents</span></div>
+      <h2>Wire Claude into <span class="hl">everything you already use.</span></h2>
+      <p class="intro">The attraction of building your own isn't that it's free, it's that it's tailored, adaptable and connected. The governing rule: <b>Google Sheets stays the single source of truth for pricing</b>, feeding both client quotes and your accountant. Never duplicate that number anywhere.</p>
+
+      <h3>The connectors that genuinely exist (June 2026)</h3>
+      <div class="conns">
+        <div class="conn"><div class="ch"><h4>Google Calendar &amp; Drive</h4><span class="pill official">Official</span></div><p>Anthropic's built-in connector. Full calendar read/write, and Drive as searchable studio memory. The easiest, safest starting point.</p></div>
+        <div class="conn"><div class="ch"><h4>Gmail</h4><span class="pill official">Official · draft-only</span></div><p>Reads threads and drafts replies in your voice. Draft-only by design: it will never email a client without you hitting send. The safe default.</p></div>
+        <div class="conn"><div class="ch"><h4>Google Sheets &amp; Tasks</h4><span class="pill community">Community server</span></div><p>Sheets editing isn't in the official connector. Add the taylorwilsdon Google Workspace server for the pricing source-of-truth Sheet and Tasks.</p></div>
+        <div class="conn"><div class="ch"><h4>Adobe for Creativity</h4><span class="pill official">Official · Apr 2026</span></div><p>Photoshop, Illustrator, InDesign, Express, Firefly, Stock. Your highest-leverage creative connector: explore, vectorise, recolour, lay out brandbooks conversationally.</p></div>
+        <div class="conn"><div class="ch"><h4>Resend</h4><span class="pill official">Official + plugin</span></div><p>Where automated, branded client email lives, kept separate from personal Gmail. Proposals ready, invoices, brandbook review notices.</p></div>
+        <div class="conn"><div class="ch"><h4>Apple Calendar / Reminders / Notes</h4><span class="pill community">Community</span></div><p>Real but community-built, no official Apple MCP. Treat as second-tier, or just make Google Calendar your single calendar and let Apple subscribe to it.</p></div>
+        <div class="conn"><div class="ch"><h4>Cloudflare</h4><span class="pill official">Official</span></div><p>Manage DNS and hosting for the marketing site by chatting. Add the docs and builds servers to start.</p></div>
+        <div class="conn"><div class="ch"><h4>Vercel &amp; Supabase</h4><span class="pill official">Official</span></div><p>Deploys, project management, and the app database. Scope the database connector read-mostly and keep destructive writes behind your explicit approval.</p></div>
+      </div>
+
+      <h3>Five custom agents worth building</h3>
+      <p class="muted">Turn the brief-to-delivery workflow into single commands. Build the first two first, the rest depend on the discipline they enforce.</p>
+      <div class="agents">
+        <div class="agent"><div class="ab">1</div><div><h4>New-project agent</h4><p>Spins up a client end to end: creates the local folder with your standard structure plus a client CLAUDE.md, mirrors it in Drive, adds the client to the ops board, drops opening tasks, and creates a linked pricing row.</p><div class="seq">Build first · enforces the discipline everything relies on</div></div></div>
+        <div class="agent"><div class="ab">2</div><div><h4>Quote-from-Sheet calculator</h4><p>Turns a scope into a client price by reading the master pricing Sheet, never by guessing. Applies the right band, returns a clean figure plus the internal margin check on a hidden tab.</p><div class="seq">Build second · the proposal-builder depends on it</div></div></div>
+        <div class="agent"><div class="ab">3</div><div><h4>Proposal-builder</h4><p>Assembles a finished, on-brand proposal from the brief, the quote and your positioning, in your voice. Writes a draft for your review, never sends.</p><div class="seq">Then</div></div></div>
+        <div class="agent"><div class="ab">4</div><div><h4>Brandbook-drafter</h4><p>Turns approved brand decisions into a structured brandbook draft, pulling assets via the Adobe connector. Gets you to 70%, you bring the taste to 100%.</p><div class="seq">Where Adobe earns its keep</div></div></div>
+        <div class="agent"><div class="ab">5</div><div><h4>Client-update-writer</h4><p>Writes the short, human progress update a client actually wants to read: what's done, what's next, what you need. Stops projects going quiet, the main reason clients get nervous.</p><div class="seq">Outputs a draft or a Resend send</div></div></div>
+      </div>
+
+      <h3>The new-project folder structure</h3>
+      <div class="window">
+        <div class="winbar"><div class="dots"><i></i><i></i><i></i></div><div class="url"><span>~/Desktop/clients/acme</span></div></div>
+        <div class="tree">
+<span class="d">acme/</span><br>
+&nbsp;├─ <span class="c">CLAUDE.md</span>          <span class="d">client brief, voice, contacts</span><br>
+&nbsp;├─ <span class="f">01-brief/</span><br>
+&nbsp;├─ <span class="f">02-discovery/</span>      <span class="d">research, personas, audit</span><br>
+&nbsp;├─ <span class="f">03-design/</span>         <span class="d">working files, explorations</span><br>
+&nbsp;├─ <span class="f">04-brandbook/</span>      <span class="d">guidelines, do/don't</span><br>
+&nbsp;└─ <span class="f">05-delivery/</span>       <span class="d">final assets, fonts, licences</span>
+        </div>
+      </div>
+
+      <div class="callout note"><div class="ct">Build order, and the caveats</div><p>Add a connector, use it for a few days, then add the next. Don't wire everything at once. Remember: the official Gmail connector can't send (a feature, not a bug), Sheets and Tasks need the community server, Apple connectors may break on macOS updates, and any database connector to Supabase must be scoped carefully because it can write live client data.</p></div>
+    </section>
+
+    <!-- 10 NUMBERS -->
+    <section id="numbers" class="s-pay">
+      <div class="sechead"><span class="secnum">10</span><span class="sectag">The numbers</span></div>
+      <h2>What it actually <span class="hl">costs to run.</span></h2>
+      <p class="intro">£0 while you're on free tiers building it. Then about <b>£50–55 a month flat</b> once the Studio app goes commercial, plus per-transaction Stripe fees and the domain. The cost does not scale with how busy you get, which is exactly right for a solo premium operator.</p>
+
+      <table class="costtbl">
+        <thead><tr><th>Service</th><th>What for</th><th style="text-align:right">Monthly</th></tr></thead>
+        <tbody>
+          <tr><td>Claude Pro</td><td>Your build partner and daily console <span class="nt">Max only if you hit usage limits</span></td><td class="amt">~£16</td></tr>
+          <tr><td>Cloudflare</td><td>Marketing site hosting + DNS <span class="nt">Free tier covers a solo studio indefinitely</span></td><td class="amt freebadge">£0</td></tr>
+          <tr><td>Vercel Pro</td><td>The Studio app <span class="nt">Hobby forbids commercial use, so this is required once live</span></td><td class="amt">~£16</td></tr>
+          <tr><td>Supabase Pro</td><td>Database, login, storage <span class="nt">Removes the 7-day idle pause, adds proper backups</span></td><td class="amt">~£20</td></tr>
+          <tr><td>Resend Pro</td><td>Email <span class="nt">Free (100/day) lasts a long while; upgrade only at volume</span></td><td class="amt">~£16</td></tr>
+          <tr><td>Stripe</td><td>Deposits &amp; balances <span class="nt">No monthly fee. ~1.5% + 20p per UK card payment</span></td><td class="amt freebadge">£0</td></tr>
+          <tr><td>toughcrowd.studio</td><td>Domain <span class="nt">Billed annually, roughly £25–40/year</span></td><td class="amt">~£3</td></tr>
+          <tr class="total"><td>Live and running</td><td>Flat, whether you have 2 clients or 200</td><td class="amt">~£71/mo</td></tr>
+        </tbody>
+      </table>
+      <div class="callout cost"><div class="ct">Reading the total</div><p>The infrastructure trio (Vercel + Supabase + Resend) is the ~£50–55/mo the rest of this plan refers to. Add Claude Pro and the domain and the all-in monthly is roughly £71, with Stripe taken per payment, not billed monthly. Free tiers mean you pay almost none of this until the app is doing real work.</p></div>
+    </section>
+
+    <!-- 11 ADDITIONS -->
+    <section id="additions" class="s-red">
+      <div class="sechead"><span class="secnum">11</span><span class="sectag">What to add</span></div>
+      <h2>The gaps worth <span class="hl">closing.</span></h2>
+      <p class="intro">A separate review pass stress-tested the plan for what was missing. These are the additions that add real commercial leverage, not vanity features, ranked by priority.</p>
+
+      <div class="adds">
+        <div class="add"><div class="prio must">Must</div><div><h4>A studio-wide CLAUDE.md as the operating brain</h4><p>The cheapest, highest-leverage thing in the plan. It's what makes 25 years of judgement repeatable instead of locked in your head. Already built into Phase 0.</p></div></div>
+        <div class="add"><div class="prio must">Must</div><div><h4>Contracts and e-signature before any deposit</h4><p>The unsigned-scope gap is where free revisions, scope creep and non-payment live. Pair the signature with the deposit so money and commitment happen together.</p></div></div>
+        <div class="add"><div class="prio must">Must</div><div><h4>UK VAT invoicing, not just a payment link</h4><p>As a UK operator near the £90,000 VAT registration threshold you need sequential, HMRC-compliant VAT invoices your accountant can reconcile. A revenue-integrity gap, not a nicety.</p></div></div>
+        <div class="add"><div class="prio must">Must</div><div><h4>Automated database backups + a tested restore</h4><p>Your entire commercial memory sits in one Postgres instance. A weekly automated export to Google Drive plus a restore you've actually tested once. Cheap insurance.</p></div></div>
+        <div class="add"><div class="prio should">Should</div><div><h4>Aggregate profitability, not just per-job</h4><p>Effective rate over time, by service, by client. That's what tells you whether to raise prices, drop a service or fire a client. Same data, one extra view.</p></div></div>
+        <div class="add"><div class="prio should">Should</div><div><h4>A brand-guardianship retainer, designed now</h4><p>Recurring revenue is what makes a solo studio bankable and smooths the feast-or-famine. Define and price the offer now, even if you build the tooling later.</p></div></div>
+        <div class="add"><div class="prio should">Should</div><div><h4>A one-page GDPR / privacy notice</h4><p>Under UK GDPR you store client data on US-hosted services. You don't need a compliance department, but a privacy notice and a data line in your terms protect the premium credibility.</p></div></div>
+        <div class="add"><div class="prio should">Should</div><div><h4>Testimonial &amp; case-study capture at handover</h4><p>Bake the ask into the final-delivery email so it never gets skipped. For a studio selling proof of taste, this is direct marketing fuel that grows the site itself.</p></div></div>
+        <div class="add"><div class="prio later">Later</div><div><h4>Referral capture + a light client portal</h4><p>Referral is the dominant channel for premium B2B branding and costs nothing. A read-only client status view kills the "where are we?" emails. Both after the core is stable.</p></div></div>
+      </div>
+
+      <h3>The risks, named</h3>
+      <div class="risk"><div class="rk">Scope overwhelm: trying to build all nine systems at once and stalling before anything earns.</div><div class="mi"><b>Mitigation:</b> the phased roadmap is a contract with yourself, not a menu. The only launch-blockers are a site that takes enquiries and a way to send proposals and take deposits.</div></div>
+      <div class="risk"><div class="rk">The app becomes a procrastination project that replaces actually selling.</div><div class="mi"><b>Mitigation:</b> no module gets built until a real live client has created the problem it solves. Revenue first, tooling second.</div></div>
+      <div class="risk"><div class="rk">Trusting the agent too much: a half-baked email sent, a broken deploy pushed.</div><div class="mi"><b>Mitigation:</b> stay on a permission mode that asks first. Encode in CLAUDE.md: emails are drafted never sent, deploys are confirmed never silent. Use preview deploys and instant rollback.</div></div>
+      <div class="risk"><div class="rk">The hours-hidden, Sheet-is-truth discipline silently breaks and prices diverge.</div><div class="mi"><b>Mitigation:</b> one place holds the number. The app references the Sheet figure, it never re-stores it. Every quote reads the Sheet at generation time.</div></div>
+    </section>
+
+    <!-- 12 START -->
+    <section id="start" class="s-red" style="border-bottom:none">
+      <div class="sechead"><span class="secnum">12</span><span class="sectag">Where to start</span></div>
+      <p class="bigquote">Ship a site that takes qualified, budget-led enquiries and a clean proposal-to-signed-deposit flow <span class="hl">before you build anything else.</span> The Studio app is a margin and sanity tool, not the business. The business is winning premium work on the strength of judgement. Build the earning engine first, instrument it second.</p>
+
+      <div class="nextmove">
+        <div class="nm"><div class="nmn">This week</div><h4>Install &amp; the brain</h4><p>Run Phase 0. Get Claude Code installed, the four accounts open, and your CLAUDE.md written. Half a day.</p></div>
+        <div class="nm"><div class="nmn">Next</div><h4>Get found</h4><p>Build and ship the marketing site with the positioning and the budget-led enquiry form. This is the only real launch.</p></div>
+        <div class="nm"><div class="nmn">Then</div><h4>Win one by hand</h4><p>Land a job and run the proposal-to-deposit flow once, manually. Only then build the app modules the friction demands.</p></div>
+      </div>
+
+      <div class="tldr">
+        <div class="tt">The whole plan in seven lines</div>
+        <ul>
+          <li><b>The product is judgement.</b> The site, the pricing and the budget question all exist to qualify buyers who get that.</li>
+          <li><b>Two properties, one brand:</b> a free Cloudflare marketing site, a paid Vercel + Supabase Studio app, joined by a client login.</li>
+          <li><b>One Google Sheet</b> is the source of truth for pricing. The client sees the total, never the hours.</li>
+          <li><b>The Profitability Loop</b> (quoted hidden hours vs actual tracked) is the one number that proves your pricing holds.</li>
+          <li><b>Build the website first,</b> win a job, then build the app one module at a time. Never all at once.</li>
+          <li><b>Sign before you take a deposit,</b> invoice properly, back up the database. The gaps that cost real money.</li>
+          <li><b>~£0 to start, ~£71/mo all-in once live,</b> flat regardless of how busy you get.</li>
+        </ul>
+      </div>
+
+      <p class="muted" style="margin-top:30px;font-size:13px">Built for Justin Murtagh, Tough Crowd Studio. Setup steps, prices and free-tier limits web-verified June 2026. Providers change their terms, so confirm each one at sign-up before you commit money.</p>
+    </section>
+
+  </div>
+  </main>
+</div>
+
+<script>
+// copy buttons
+document.querySelectorAll('.cmd .copy').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var pre=btn.closest('.cmd').querySelector('pre');
+    var text=pre.innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent='Copied';btn.classList.add('done');
+      setTimeout(function(){btn.textContent='Copy';btn.classList.remove('done');},1600);
+    });
+  });
+});
+// scroll-spy nav highlight
+var links=document.querySelectorAll('.navlist a');
+var map={};links.forEach(function(l){map[l.getAttribute('href').slice(1)]=l;});
+var sections=document.querySelectorAll('section[id], header[id]');
+var obs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      links.forEach(function(l){l.classList.remove('active');});
+      if(map[e.target.id])map[e.target.id].classList.add('active');
+    }
+  });
+},{rootMargin:'-20% 0px -70% 0px'});
+sections.forEach(function(s){obs.observe(s);});
+</script>
+</body>
+</html>
