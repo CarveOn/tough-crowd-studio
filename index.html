@@ -523,7 +523,7 @@ p.muted{color:var(--muted)}
     <section id="picture" class="s-red">
       <div class="sechead"><span class="secnum">01</span><span class="sectag">The big picture</span></div>
       <h2>Two properties. <span class="hl">One brand.</span></h2>
-      <p class="intro">You are building <b>two separate things</b> joined by a single brand and a single console. A public <b>marketing website</b> that wins work, and a private <b>Studio app</b> that runs it. Claude Code is the terminal you drive both from. Nothing here needs you to become a developer. You describe what you want in plain English and it builds it.</p>
+      <p class="intro">You are building <b>two separate things</b> joined by a single brand and a single workspace. A public <b>marketing website</b> that wins work, and a private <b>Studio app</b> that runs it. Claude Code is the one app you drive both from, a normal Mac window you simply chat to. Nothing here needs you to become a developer. You describe what you want in plain English and it builds it.</p>
 
       <div class="arch">
         <div class="top">
@@ -625,47 +625,38 @@ p.muted{color:var(--muted)}
     <section id="setup" class="s-setup">
       <div class="sechead"><span class="secnum">03</span><span class="sectag">Phase 0 · Setup</span></div>
       <h2>From a blank Mac to a <span class="hl">working studio brain.</span></h2>
-      <p class="intro">About 20 to 30 minutes. <b>Claude Code is an AI agent that lives in your Terminal</b> and builds, edits and runs things for you, working directly on the files and services on your Mac. Every command below says what it does first. Read each line before you press Return. Nothing runs until you do.</p>
+      <p class="intro">About 15 minutes, no technical skill needed. <b>Claude Code comes as a friendly desktop app for Mac</b>, a normal window where you chat in plain English and watch it work on the files and services on your Mac. That is where you live. A Terminal exists underneath for the rare one-off, but day to day you never open it.</p>
 
-      <h3>The install, step by step</h3>
+      <h3>Set up the app, step by step</h3>
       <div class="steps">
         <div class="step accent-num" style="color:var(--setup)">
           <div class="num"></div>
-          <div class="body"><h4>Open the Terminal</h4><p>Press Cmd+Space, type Terminal, press Return. A window opens with a blinking cursor. This is where setup happens. Leave it open.</p></div>
+          <div class="body"><h4>Download the Claude Code desktop app</h4><p>Go to claude.com/claude-code and download the Mac app. Open the downloaded file and drag Claude Code into your Applications folder, exactly like installing any other Mac app. No Terminal, no developer tools, nothing technical.</p></div>
         </div>
         <div class="step accent-num" style="color:var(--setup)">
           <div class="num"></div>
-          <div class="body"><h4>Install Claude Code (native installer, nothing else needed)</h4><p>The recommended way on a fresh Mac. No Node.js, no extra tools, and it keeps itself updated. It does not touch your files or ask for your password.</p>
-            <div class="cmd"><div class="cmdhead"><span class="lbl">Terminal</span><button class="copy">Copy</button></div><pre>curl -fsSL https://claude.ai/install.sh | bash</pre></div>
+          <div class="body"><h4>Open it and sign in</h4><p>Launch the app and click Sign in. Use your Claude Pro account ($20/mo), the same login as the Claude website. Pro is a flat, predictable fee and far cheaper than pay-per-use for daily work. Move up to Max only if you ever hit limits.</p>
+            <div class="callout warn" style="margin-top:11px"><div class="ct">Stay on the subscription</div><p>Just sign in with your Claude account inside the app. Do not paste an API key in anywhere, that quietly switches you to pricier pay-per-use billing.</p></div>
           </div>
         </div>
         <div class="step accent-num" style="color:var(--setup)">
           <div class="num"></div>
-          <div class="body"><h4>Confirm it installed</h4><p>Prints the version number. If you see "command not found", close the window, open a fresh Terminal, and run it again.</p>
-            <div class="cmd"><div class="cmdhead"><span class="lbl">Terminal</span><button class="copy">Copy</button></div><pre>claude --version</pre></div>
-          </div>
+          <div class="body"><h4>Point it at a folder</h4><p>In the app choose Open project (or New project) and pick a folder on your Mac, for example one called tough-crowd on your Desktop. That folder becomes the workspace for this work. Each client gets its own folder later.</p></div>
         </div>
         <div class="step accent-num" style="color:var(--setup)">
           <div class="num"></div>
-          <div class="body"><h4>Sign in on a Claude subscription, not API billing</h4><p>Start on Claude Pro ($20/mo). It is a flat, predictable fee and works out far cheaper than pay-per-use for daily work. Move to Max only if you hit limits. The command opens your browser to approve.</p>
-            <div class="cmd"><div class="cmdhead"><span class="lbl">Terminal</span><button class="copy">Copy</button></div><pre>claude login</pre></div>
-            <div class="callout warn" style="margin-top:11px"><div class="ct">Do not set an API key</div><p>If an ANTHROPIC_API_KEY exists on your system, Claude Code silently switches to pricier pay-per-use billing. Leave it unset and stay on your subscription.</p></div>
-          </div>
-        </div>
-        <div class="step accent-num" style="color:var(--setup)">
-          <div class="num"></div>
-          <div class="body"><h4>Make your first project folder and start a session</h4><p>Claude works inside a folder. Make one, move into it, start a session. The prompt changes and you can type in plain English. End a session with /exit.</p>
-            <div class="cmd"><div class="cmdhead"><span class="lbl">Terminal</span><button class="copy">Copy</button></div><pre>mkdir -p ~/Desktop/tough-crowd-site
-cd ~/Desktop/tough-crowd-site
-claude</pre></div>
-          </div>
+          <div class="body"><h4>Start talking</h4><p>Type what you want in the chat box, just like messaging the Claude app, and it does the work and shows you what changed. That is the whole loop, and you do it all in a normal window, never a terminal.</p></div>
         </div>
       </div>
 
-      <h3>The single most important file you'll create</h3>
-      <p>CLAUDE.md is a plain text file Claude reads automatically at the start of every session and treats as standing instructions. Think of it as <b>the studio's operating brain</b>. Write down once what you would otherwise repeat forever: your rates, your hidden-hours rule, your voice, your folders, your do/don't rules. The quality of everything Claude makes for you rises and falls on this file. The critic flagged it as the cheapest, highest-leverage thing in the whole plan, and it costs nothing.</p>
+      <div class="callout note"><div class="ct">If you ever do need the Terminal</div><p>You almost never will. A handful of one-off jobs are quickest as a single pasted line, and when that happens the app can run it for you, or you open Terminal (Cmd+Space, type Terminal) and paste. The one line you might ever need, as an alternative to the app installer above, is below. Skip it unless something specifically asks for it.</p>
+        <div class="cmd"><div class="cmdhead"><span class="lbl">Terminal · only if needed</span><button class="copy">Copy</button></div><pre>curl -fsSL https://claude.ai/install.sh | bash</pre></div>
+      </div>
 
-      <div class="cmd"><div class="cmdhead"><span class="lbl">~/Desktop/clients/CLAUDE.md — a starting point, refine over time</span><button class="copy">Copy</button></div><pre><span class="cc"># Tough Crowd Studio — operating brain</span>
+      <h3>The single most important file you'll create</h3>
+      <p>CLAUDE.md is a plain text file the app reads automatically every time you open the project, and treats as standing instructions. Think of it as <b>the studio's operating brain</b>. You do not type it out yourself; just ask Claude in the app to create it, then refine it. Write down once what you would otherwise repeat forever: your rates, your hidden-hours rule, your voice, your folders, your do/don't rules. The quality of everything Claude makes for you rises and falls on this file. The critic flagged it as the cheapest, highest-leverage thing in the whole plan, and it costs nothing.</p>
+
+      <div class="cmd"><div class="cmdhead"><span class="lbl">Paste into the app and say "save this as CLAUDE.md" — refine over time</span><button class="copy">Copy</button></div><pre><span class="cc"># Tough Crowd Studio — operating brain</span>
 
 <span class="cc">## Who we are</span>
 Tough Crowd Studio. Owner: Justin Murtagh. Branding and rebranding specialist.
@@ -688,21 +679,21 @@ We sell taste and judgement, not hours.
 - Each client folder has its own CLAUDE.md with that client's brief and voice.
 
 <span class="cc">## Do / Don't</span>
-- DO explain commands in plain English before asking me to run them.
+- DO explain what you're about to do in plain English before you do it.
 - DO warn me before anything that deletes, overwrites or goes live.
 - DON'T send any email automatically. Draft only. I send.
 - DON'T deploy to the live site without asking. DON'T invent client facts.</pre></div>
 
       <h3>How it all connects</h3>
       <div class="grid g3">
-        <div class="card"><div class="ic">MCP connectors</div><p class="muted" style="font-size:14px;margin:8px 0 0">The standard way Claude plugs into outside services, like a USB port for software. One plug for Cloudflare, one for Google Drive, and so on. Add with <code style="font-family:var(--mono);font-size:12px;color:var(--setup)">claude mcp add</code>, then approve in your browser.</p></div>
+        <div class="card"><div class="ic">MCP connectors</div><p class="muted" style="font-size:14px;margin:8px 0 0">The standard way Claude plugs into outside services, like a USB port for software. One plug for Cloudflare, one for Google Drive, and so on. You add them in the app's settings, or just ask Claude to connect one, then approve in your browser.</p></div>
         <div class="card"><div class="ic">Skills &amp; subagents</div><p class="muted" style="font-size:14px;margin:8px 0 0">A Skill is a saved set of instructions for a task you repeat. A subagent is a specialist Claude hands a job to. You don't need either on day one. Add them when you catch yourself repeating instructions.</p></div>
         <div class="card"><div class="ic">Cloudflare ↔ Claude</div><p class="muted" style="font-size:14px;margin:8px 0 0">The official Cloudflare plugin installs the connector and the deploy tool together, so you can say "deploy the latest site" or "add a DNS record" and Claude does it.</p></div>
       </div>
 
       <div class="callout warn">
         <div class="ct">Safety, while you build confidence</div>
-        <p>Claude asks before it edits a file or runs a command. Stay on that default. The key tool is <b>Plan Mode</b> (press Shift+Tab to cycle modes, or start with <code style="font-family:var(--mono);font-size:12px">claude --permission-mode plan</code>): Claude writes out what it would do and changes nothing until you approve. Use it for anything expensive to get wrong, going live, deleting, payments, DNS.</p>
+        <p>The app asks for your approval before it edits a file or runs anything. Stay on that default. The key tool is <b>Plan Mode</b>, a toggle in the app: Claude writes out exactly what it would do and changes nothing until you click approve. Use it for anything expensive to get wrong, going live, deleting, payments, DNS.</p>
       </div>
     </section>
 
@@ -787,8 +778,8 @@ We sell taste and judgement, not hours.
       <p class="muted">Cloudflare is both your DNS (the phone book that points the domain at the site) and your host, which is why custom domain and SSL setup is almost fully automatic once the domain is in your account.</p>
       <div class="steps">
         <div class="step accent-num" style="color:var(--web)"><div class="num"></div><div class="body"><h4>Create a free Cloudflare account and add the domain</h4><p>Sign up at dash.cloudflare.com, turn on two-factor. Easiest route for a fresh start: register toughcrowd.studio directly through Cloudflare, where it arrives pre-wired for DNS and SSL. No card needed for the free tier.</p></div></div>
-        <div class="step accent-num" style="color:var(--web)"><div class="num"></div><div class="body"><h4>Deploy with one command (Claude does this for you)</h4><p>You'll just say "deploy the latest site". Under the hood it's wrangler, Cloudflare's deploy tool. Each push is a new versioned deployment you can roll back, so it's safe to re-run as often as you like.</p>
-          <div class="cmd"><div class="cmdhead"><span class="lbl">What Claude runs</span><button class="copy">Copy</button></div><pre>npx wrangler pages project create toughcrowd-studio
+        <div class="step accent-num" style="color:var(--web)"><div class="num"></div><div class="body"><h4>Deploy in one step (you just ask the app)</h4><p>You'll just say "deploy the latest site" in the chat. Under the hood it's wrangler, Cloudflare's deploy tool, but Claude runs it. Each push is a new versioned deployment you can roll back, so it's safe to repeat as often as you like.</p>
+          <div class="cmd"><div class="cmdhead"><span class="lbl">What Claude runs for you</span><button class="copy">Copy</button></div><pre>npx wrangler pages project create toughcrowd-studio
 npx wrangler pages deploy ./out --project-name toughcrowd-studio</pre></div></div></div>
         <div class="step accent-num" style="color:var(--web)"><div class="num"></div><div class="body"><h4>Connect the domain</h4><p>In Workers &amp; Pages, open the project, Custom domains, add toughcrowd.studio. Cloudflare adds the DNS record and SSL certificate for you in the background. A one-time click, then forget it.</p></div></div>
       </div>
@@ -923,17 +914,16 @@ npx wrangler pages deploy ./out --project-name toughcrowd-studio</pre></div></di
 
       <h3>You build it by talking. For example:</h3>
       <div class="window">
-        <div class="winbar"><div class="dots"><i></i><i></i><i></i></div><div class="url"><span>claude — studio app</span></div></div>
+        <div class="winbar"><div class="dots"><i></i><i></i><i></i></div><div class="url"><span>Claude Code · studio</span></div></div>
         <div class="term">
-<span class="dim">~/Desktop/studio</span> <span class="p">❯</span> <span class="u">claude</span><br>
-<span class="ai">●</span> <span class="out">Ready. What are we building?</span><br><br>
-<span class="p">❯</span> Build the Projects module. A project has a client, delivery date,<br>
-&nbsp;&nbsp;quoted price and subtasks, each with its own date and a done checkbox.<br>
-&nbsp;&nbsp;Colour each subtask by days remaining, written once as a shared function<br>
-&nbsp;&nbsp;and reused everywhere: green over 7 days, amber 3 to 7, orange 1 to 3,<br>
-&nbsp;&nbsp;red under 1 day or overdue. Completed subtasks turn grey.<br><br>
-<span class="ai">●</span> <span class="out">I'll add a shared <span class="ai">deadlineColour()</span> helper, the Projects table, and the UI.</span><br>
-<span class="ai">●</span> <span class="out">Plan ready. Review before I write the files?</span> <span class="ok">[y/n]</span>
+<span class="dim">Claude Code desktop app · tough-crowd / studio</span><br><br>
+<span class="u">You</span>&nbsp;&nbsp;Build the Projects module. A project has a client, delivery date,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;quoted price and subtasks, each with its own date and a done checkbox.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Colour each subtask by days remaining, written once as a shared function<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and reused everywhere: green over 7 days, amber 3 to 7, orange 1 to 3,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;red under 1 day or overdue. Completed subtasks turn grey.<br><br>
+<span class="ai">●</span> <span class="out"><span class="ai">Claude</span>&nbsp;&nbsp;I'll add a shared <span class="ai">deadlineColour()</span> helper, the Projects table, and the UI.</span><br>
+<span class="ai">●</span> <span class="out">Plan ready. Review before I make the changes?</span> &nbsp;<span class="ok">[ Approve ]</span> <span class="dim">[ Adjust ]</span>
         </div>
       </div>
 
